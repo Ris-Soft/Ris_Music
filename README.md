@@ -1,5 +1,5 @@
-# 瑞思音乐-Ris_Flood
-## 简洁的消息发送器
+# 瑞思音乐-Ris_Music
+## 简洁的音乐软件
 由PYLXU(腾瑞思智)开发，在Github使用LGPLv3协议开源
 
 [请点击这里下载最新版本的构建](https://github.com/PYLXU/Ris_Music/releases)
