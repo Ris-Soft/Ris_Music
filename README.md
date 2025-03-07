@@ -2,28 +2,24 @@
 ## 简洁的音乐软件
 由PYLXU(腾瑞思智)开发，在Github使用LGPLv3协议开源
 
-[请点击这里下载最新版本的构建](https://github.com/PYLXU/Ris_Music/releases)
+本存储库为现存网页版，易语言版本在分支“e”中
 
 ## 基本说明
 **1.界面美观**
 
 简洁而又美观大方的界面设计，让您的音乐之旅焕然一新
 
-**2.稳定工作**
+**2.随时随地**
 
-精心优化，减少您软件崩溃的次数和可能
+网页版程序，随时随地访问
 
-**3.在线资源**
-
-支持从网易云音乐获取在线资源，畅听网络
-
-**特别提醒：本程序不提供VIP歌曲免费播放**
 
 ## 图片展示
 
-![image](https://github.com/PYLXU/Ris_Music/assets/104706823/b1dcdc45-4a19-42c2-a2cc-57f4539b145b)
-![7d53b868105b70276b88d411a7228a04](https://github.com/PYLXU/Ris_Music/assets/104706823/0b7ac710-9b4b-417a-9ec0-ab7d6e29d11e)  
-![a2fe984a33c4b1913c1b53eb3b38a6b3](https://github.com/PYLXU/Ris_Music/assets/104706823/0906df19-7f92-4827-b692-c5f1158e3e55)  
+![image](https://github.com/user-attachments/assets/15fdd645-f1f4-48c7-8209-f28e33387a6d)
+![image](https://github.com/user-attachments/assets/efefd501-1df6-4476-b78a-521916f3318b)
+![image](https://github.com/user-attachments/assets/ac18a9e6-848a-4330-b297-7b34bcae56b4)
+
 
 ## 联系我们
 QQ群：939571490
