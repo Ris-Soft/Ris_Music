@@ -1,0 +1,32 @@
+[
+    {
+        "type": "link",
+        "text": "<i class=\"bi bi-arrow-up-right-circle\"></i>&nbsp;瑞思音乐",
+        "href": "https://music.3r60.top/app/"
+    },
+    {
+        "type": "link",
+        "text": "<i class=\"bi bi-file-earmark-music-fill\"></i>&nbsp;发现歌曲",
+        "href": "https://music.3r60.top/app/recommend.html"
+    },
+    {
+        "type": "link",
+        "text": "<i class=\"bi bi-search\"></i>&nbsp;歌曲搜索",
+        "href": "https://music.3r60.top/app/search.html"
+    },
+    {
+        "type": "link",
+        "text": "<i class=\"bi bi-list-nested\"></i>&nbsp;歌单搜索",
+        "href": "https://music.3r60.top/app/search_songList.html"
+    },
+    {
+        "type": "link",
+        "text": "<i class=\"bi bi-file-earmark-play-fill\"></i>&nbsp;视频搜索",
+        "href": "https://music.3r60.top/app/search_movie.html"
+    },
+    {
+        "type": "link",
+        "text": "<i class=\"bi bi-app-indicator\"></i>&nbsp;SimMusic",
+        "href": "https://music.3r60.top/app/sim_music.html"
+    }
+]

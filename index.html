@@ -1,0 +1,61 @@
+<html lang="zh-cn">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>未在播放 | 瑞思音乐</title>
+  <script>
+    let defaultTitle = '瑞思音乐';
+    let defaultNavItems = [];
+    let defaultNavRightItems = [];
+    let defaultFooterLinks = [];
+    let defaultCopyright = `腾瑞思智`;
+    let webTitle = '瑞思音乐';
+  </script>
+  <script src="https://assets.3r60.top/v3/package.js"></script>
+  <link href="./assets/css/basic.css" rel="stylesheet">
+</head>
+
+<body>
+  <!-- 播放列表/播放器/播放页面 -->
+  <card id="playlistSidebar" class="playlist-sidebar"></card>
+  <card id="miniPlayer" class="mini-player" style="display: flex;flex-direction: row;"></card>
+  <div id="playPage" class="container hidden2"></div>
+  <script src="./components/load-components.js"></script>
+
+  <!-- 页面部分 -->
+  <topbar style="left: 0;" data-showExpendButton="false"></topbar>
+  <main class="flex pb-0" style="margin-bottom: 80px;">
+    <link href="./assets/css/iframe.css" rel="stylesheet">
+    <lead>
+      <ul data-changeTitle="false" data-filename="https://music.3r60.top/app/contents.json" class="list"></ul>
+    </lead>
+    <content>
+      <h1>瑞思音乐</h1>
+      欢迎使用瑞思音乐👋<br>在下方选择一个操作吧:<br><br>
+      <span class="flex" style="flex-flow:row wrap">
+            <a href="JavaScript:loadUrl('https://music.3r60.top/app/recommend.html')" class="btn btn-white btn-shadow btn-lg mb-10 mr-10">
+					<h3 class="project-title"><i class="bi bi-vinyl"></i>&nbsp;发现歌曲</h3>
+			</a>
+            <a href="JavaScript:loadUrl('https://music.3r60.top/app/search.html')" class="btn btn-white btn-shadow btn-lg mb-10 mr-10">
+					<h3 class="project-title"><i class="bi bi-file-music"></i>&nbsp;搜索歌曲</h3>
+			</a>
+            <a href="JavaScript:loadUrl('https://music.3r60.top/app/search_songList.html')" class="btn btn-white btn-shadow btn-lg mb-10 mr-10">
+					<h3 class="project-title"><i class="bi bi-music-note-list"></i>&nbsp;搜索歌单</h3>
+			</a>
+      <a href="JavaScript:togglePlaylist()" class="btn btn-white btn-shadow btn-lg mb-10 mr-10">
+          <h3 class="project-title"><i class="bi bi-list-ul"></i>&nbsp;播放列表</h3>
+      </a>
+      <script src="./assets/js/page.js"></script>
+      <script src="./assets/js/netease.js"></script>
+    </content>
+  </main>
+      <script>
+        appName = '瑞思音乐'
+      </script>
+      <script src="https://music.3r60.top/app/assets/js/media-free.js"></script>
+      <script src="https://music.3r60.top/app/assets/js/basic.js"></script>
+</body>
+
+</html>

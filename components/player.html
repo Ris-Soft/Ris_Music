@@ -1,0 +1,26 @@
+    <span style="display: flex;">
+    <img id="miniCover" src="favicon.ico" alt="Cover" />
+    <div id="miniSongInfo">
+      <span>
+        <span id="miniTitle">瑞思音乐</span>
+    <span id="miniArtist">未在播放</span>
+    </span>
+    </div>
+    </span>
+    <span  id="centerControl">
+      <button id="playModeButton" class="control-btn" title="列表循环"><i class="bi bi-arrow-repeat"></i></button>
+    <button id="prevButton" class="control-btn"><i class="bi bi-skip-start-fill"></i></button>
+    <button id="playPauseButton" class="control-btn play-pause"><i class="bi bi-play-fill"></i></button>
+    <button id="nextButton" class="control-btn"><i class="bi bi-skip-end-fill"></i></button>
+    <button id="muteButton" class="control-btn mute"><i class="bi bi-volume-up-fill"></i></button>
+      <span style="display: flex;align-items: center;justify-content: center;">
+        <span id="currentTime" class="current-time">0:00</span>
+    <input type="range" id="SprogressBar" class="progress-bar" min="0" value="0">
+    <span id="durationTime" class="duration-time">0:00</span>
+    </span>
+    </span>
+    <span>
+    <button class="control-btn" onclick="uiControl.playlist()"><i class="bi bi-list-ul"></i></button>
+    <input style="display:none" type="range" id="volumeBar" class="volume-bar" min="0" max="1" step="0.01" value="1">
+    <button id="shareButton" class="control-btn"><i class="bi bi-download"></i></button>
+      </span>

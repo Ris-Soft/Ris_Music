@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>桌面歌词</title>
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+			font-family: Arial, sans-serif;
+			overflow: hidden
+		}
+
+		#lyrics-container {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			padding: 20px;
+			text-align: center;
+			width: 100%
+		}
+
+		#song-info {
+			font-size: 18px;
+			font-weight: bold;
+			margin-bottom: 10px;
+		}
+
+		#current-lrc {
+			font-size: 24px;
+			color: #333;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="lyrics-container">
+		<div id="song-info"></div>
+		<div id="current-lrc"></div>
+	</div>
+
+	<script>
+		// 从Cookie中读取歌曲信息和歌词
+function readCookie(name) {
+    const cookieArr = document.cookie.split(";");
+    for (let i = 0; i < cookieArr.length; i++) {
+        const cookiePair = cookieArr[i].split("=");
+        if (cookiePair[0].trim() === name) {
+            return decodeURIComponent(cookiePair[1]);
+        }
+    }
+    return "";
+}
+
+
+function updateDisplay() {
+    const songName = readCookie("songName");
+    const artistName = readCookie("artistName");
+    const currentLrc = readCookie("currentLrc2");
+
+    document.getElementById("song-info").textContent = `${songName} - ${artistName}`;
+    document.getElementById("current-lrc").textContent = currentLrc;
+}
+
+// 定时更新显示
+setInterval(updateDisplay, 1000);
+updateDateTime();
+	</script>
+</body>
+
+</html>

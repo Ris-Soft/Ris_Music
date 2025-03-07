@@ -1,0 +1,128 @@
+<html lang="zh-cn">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>未在播放 | 瑞思音乐</title>
+  <script>
+    let defaultTitle = '瑞思音乐';
+    let defaultNavItems = [];
+    let defaultNavRightItems = [];
+    let defaultFooterLinks = [];
+    let defaultCopyright = `腾瑞思智`;
+    let webTitle = '瑞思音乐';
+  </script>
+  <script src="https://assets.3r60.top/v3/package.js"></script>
+  <link href="./assets/css/basic.css" rel="stylesheet">
+</head>
+
+<body>
+  <!-- 播放列表/播放器/播放页面 -->
+  <card id="playlistSidebar" class="playlist-sidebar"></card>
+  <card id="miniPlayer" class="mini-player" style="display: flex;flex-direction: row;"></card>
+  <div id="playPage" class="container hidden2"></div>
+  <script src="./components/load-components.js"></script>
+
+  <!-- 页面部分 -->
+  <topbar style="left: 0;" data-showExpendButton="false"></topbar>
+  <main class="flex pb-0" style="margin-bottom: 80px;">
+    <link href="./assets/css/iframe.css" rel="stylesheet">
+    <lead>
+      <ul data-changeTitle="false" data-filename="https://music.3r60.top/app/contents.json" class="list"></ul>
+    </lead>
+    <content>
+      <form id="searchForm" onsubmit="submitForm(); return false;">
+        <input type="text" name="keyword" id="keyword" class="textEditor textEditor-success textEditor-shadow" style="min-width:220px;width:70%;"
+          autocomplete="off" placeholder="搜索网易云...">
+        <button type="submit" class="btn btn-success btn-md btn-shadow" style="height:40px"><i class="bi bi-search"></i></button>
+      </form>
+      <script>
+        function submitForm() {
+          var keyword = document.getElementById('keyword').value;
+          searchMusic(keyword);
+        }
+      </script>
+      <div id="searchResults">
+      </div>
+      <script src="./assets/js/page.js"></script>
+      <script src="./assets/js/netease.js"></script>
+      <script>
+        document.getElementById('searchForm').onsubmit = function (event) {
+          event.preventDefault();
+          const keyword = document.getElementById('keyword').value;
+          searchMusic(keyword);
+        };
+        searchMusic("热门歌曲");
+      </script>
+    </content>
+  </main>
+  <script>
+    appName = '瑞思音乐';
+  
+  // 添加播放列表操作函数
+function replacePlaylistWithCurrent() {
+  tracks = search_lists;
+  console.log(tracks)
+    // 清空当前播放列表
+    playlist = [];
+    currentTrackIndex = 0;
+    
+    // 转换数据结构并添加
+    tracks.forEach(track => {
+        playlist.push({
+            id: track.id,
+            name: track.name,
+            ar: track.artists,
+            al: {
+                name: track.album.name
+            }
+        });
+    });
+    
+    // 更新界面和存储
+    updatePlaylistUI();
+    savePlaylistToStorage();
+    
+    // 自动播放第一首
+    if (playlist.length > 0) {
+        switchMusic(playlist[0].id, "true");
+    }
+}
+ 
+function addAllToPlaylist() {
+    // 转换数据结构并过滤已存在歌曲
+    tracks = search_lists;
+    const newTracks = tracks.filter(track => 
+        !playlist.some(item => item.id === track.id)
+    ).map(track => ({
+        id: track.id,
+        name: track.name,
+        ar: track.artists,
+        al: {
+            name: track.album.name
+        }
+    }));
+    
+    // 添加新歌曲
+    playlist.push(...newTracks);
+    
+    // 如果是空列表则设置当前索引
+    if (currentTrackIndex === -1 && playlist.length > 0) {
+        currentTrackIndex = 0;
+    }
+    
+    // 更新界面和存储
+    updatePlaylistUI();
+    savePlaylistToStorage();
+    
+    // 显示添加成功提示
+    // showToast(`成功添加 ${newTracks.length} 首歌曲到播放列表`);
+    createMessage(`成功添加 ${newTracks.length} 首歌曲到播放列表`, "success", 3000)
+}
+  </script>
+  <script src="https://music.3r60.top/app/assets/js/media-free.js"></script>
+  <script src="https://music.3r60.top/app/assets/js/basic.js"></script>
+</body>
+
+</html>

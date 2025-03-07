@@ -1,0 +1,177 @@
+<html lang="zh-cn">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>未在播放 | 瑞思音乐</title>
+  <script>
+    let defaultTitle = '瑞思音乐';
+    let defaultNavItems = [];
+    let defaultNavRightItems = [];
+    let defaultFooterLinks = [];
+    let defaultCopyright = `腾瑞思智`;
+    let webTitle = '瑞思音乐';
+  </script>
+  <script src="https://assets.3r60.top/v3/package.js"></script>
+  <link href="./assets/css/basic.css" rel="stylesheet">
+</head>
+
+<body>
+  <!-- 播放列表/播放器/播放页面 -->
+  <card id="playlistSidebar" class="playlist-sidebar"></card>
+  <card id="miniPlayer" class="mini-player" style="display: flex;flex-direction: row;"></card>
+  <div id="playPage" class="container hidden2"></div>
+  <script src="./components/load-components.js"></script>
+
+  <!-- 页面部分 -->
+  <topbar style="left: 0;" data-showExpendButton="false"></topbar>
+  <main class="flex pb-0" style="margin-bottom: 80px;">
+    <link href="./assets/css/iframe.css" rel="stylesheet">
+    <lead>
+      <ul data-changeTitle="false" data-filename="https://music.3r60.top/app/contents.json" class="list"></ul>
+    </lead>
+    <content>
+      <div id="searchResults">
+      </div>
+      <script src="./assets/js/page.js"></script>
+      <script src="./assets/js/netease.js"></script>
+      <script>
+        var queryParams = new URLSearchParams(window.location.search);
+        var lists = [];
+
+        function requestMusicChange(id) {
+          parent.postMessage({
+            type: 'CHANGE_MUSIC',
+            id: id
+          }, "*");
+        }
+
+        var songlistId = queryParams.get('songlistId')
+          fetch(`https://netease.api.3r60.top/playlist/detail?id=${encodeURIComponent(songlistId)}`)
+            .then(response => response.json())
+            .then(data => {
+              displayListDetail(data, songlistId);
+            });
+
+        function displayListDetail(data, keyword) {
+          const searchResults = document.getElementById('searchResults');
+          if (data.playlist && data.playlist.tracks.length > 0) {
+            lists = data.playlist.tracks;
+            let resultsHtml = `
+                <div style="display:flex;max-height: 160px;">
+            <img style="height: 140px;border-radius: 5px;margin: 10px;" src="${data.playlist.coverImgUrl}" alt="封面">
+            <div style="display: flex;flex-direction: column;">
+                <h2>${data.playlist.name}</h2>
+                <p style="flex: 1;overflow: hidden;">[${data.playlist.creator.nickname}]${data.playlist.description}</p>
+                <div class="playlist-actions" style="margin-bottom: 12px;">
+                    <button class="btn btn-success btn-shadow btn-md" 
+                            onclick="replacePlaylistWithCurrent()">
+                        <i class="bi bi-play-fill"></i> 全部播放
+                    </button>
+                    <button class="btn btn-white btn-shadow btn-md" 
+                            onclick="addAllToPlaylist()">
+                        <i class="bi bi-plus-square"></i> 添加到列表
+                    </button>
+                </div>
+            </div>
+        </div>`;
+            resultsHtml += `<table id="musicLists" class='result'><tr><th>歌曲名称</th><th>艺术家</th><th>专辑</th></tr>`;
+            data.playlist.tracks.forEach(song => {
+              resultsHtml += `<tr id="music_${song.id}" ${song.id === playlist[currentTrackIndex].id ? 'class="active"' : '"'}>`;
+              resultsHtml += `<td><a href='JavaScript:requestMusicChange(${song.id})' >${song.name}</a></td>`;
+              resultsHtml += `<td><a href='JavaScript:requestMusicChange(${song.id})' >${tools.formatArtistNames(song.ar)}</a></td>`;
+              resultsHtml += `<td><a href='JavaScript:requestMusicChange(${song.id})' >${song.al.name}</a></td>`;
+              resultsHtml += `</tr>`;
+            });
+            resultsHtml += `</table>`;
+            searchResults.innerHTML = resultsHtml;
+          } else {
+            searchResults.innerHTML = `<p>未找到与 "${keyword}" 相关的结果。</p>`;
+          }
+          bindMenu();
+        }
+// 添加播放列表操作函数
+function replacePlaylistWithCurrent() {
+  tracks = lists;
+  console.log(tracks)
+    // 清空当前播放列表
+    playlist = [];
+    currentTrackIndex = 0;
+    
+    // 转换数据结构并添加
+    tracks.forEach(track => {
+        playlist.push({
+            id: track.id,
+            name: track.name,
+            ar: track.ar,
+            al: {
+                picUrl: track.al.picUrl,
+                name: track.al.name
+            }
+        });
+    });
+    
+    // 更新界面和存储
+    updatePlaylistUI();
+    savePlaylistToStorage();
+    
+    // 自动播放第一首
+    if (playlist.length > 0) {
+        switchMusic(playlist[0].id, "true");
+    }
+}
+ 
+function addAllToPlaylist() {
+    // 转换数据结构并过滤已存在歌曲
+    tracks = lists;
+    const newTracks = tracks.filter(track => 
+        !playlist.some(item => item.id === track.id)
+    ).map(track => ({
+        id: track.id,
+        name: track.name,
+        ar: track.ar,
+        al: {
+            picUrl: track.al.picUrl,
+            name: track.al.name
+        }
+    }));
+    
+    // 添加新歌曲
+    playlist.push(...newTracks);
+    
+    // 如果是空列表则设置当前索引
+    if (currentTrackIndex === -1 && playlist.length > 0) {
+        currentTrackIndex = 0;
+    }
+    
+    // 更新界面和存储
+    updatePlaylistUI();
+    savePlaylistToStorage();
+    
+    createMessage(`成功添加 ${newTracks.length} 首歌曲到播放列表`, "success", 3000)
+}
+      </script>
+    </content>
+  </main>
+  <div class="container hidden2">
+    <button id="backButton" class="btn btn-md btn-white btn-shadow"><i class="bi bi-chevron-down"></i></button>
+    <div class="MusicInfo">
+      <img id="cover" src="" alt="" />
+      <p id="songInfo"><b>未播放音乐</b><br>
+        <span id="artist" style="font-size:18px"></span>
+      </p>
+    </div>
+    <div class="lrc">
+      <ul id="ullrc"></ul>
+    </div>
+    <audio id="MusicPlayer"></audio>
+  </div>
+  <script>
+    appName = '瑞思音乐'
+  </script>
+  <script src="https://music.3r60.top/app/assets/js/media-free.js"></script>
+  <script src="https://music.3r60.top/app/assets/js/basic.js"></script>
+</body>
+
+</html>

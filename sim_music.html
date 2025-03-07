@@ -1,0 +1,202 @@
+<html lang="zh-cn">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>未在播放 | 瑞思音乐</title>
+  <script>
+    let defaultTitle = '瑞思音乐';
+    let defaultNavItems = [];
+    let defaultNavRightItems = [];
+    let defaultFooterLinks = [];
+    let defaultCopyright = `腾瑞思智`;
+    let webTitle = '瑞思音乐';
+  </script>
+  <script src="https://assets.3r60.top/v3/package.js"></script>
+  <link href="./assets/css/basic.css" rel="stylesheet">
+</head>
+
+<body>
+  <!-- 播放列表/播放器/播放页面 -->
+  <card id="playlistSidebar" class="playlist-sidebar"></card>
+  <card id="miniPlayer" class="mini-player" style="display: flex;flex-direction: row;"></card>
+  <div id="playPage" class="container hidden2"></div>
+  <script src="./components/load-components.js"></script>
+
+  <!-- 页面部分 -->
+  <topbar style="left: 0;" data-showExpendButton="false"></topbar>
+  <main class="flex pb-0" style="margin-bottom: 80px;">
+    <link href="./assets/css/iframe.css" rel="stylesheet">
+    <lead>
+      <ul data-changeTitle="false" data-filename="https://music.3r60.top/app/contents.json" class="list"></ul>
+    </lead>
+    <content>
+		<br>
+      <img style="width: 90px;box-shadow: 0px 0px 2000px rgb(0 146 255);border-radius: 20px;" src="https://simsv.com/software/branding/sim-music.png">
+	  <h1>SimMusic</h1>
+	  高颜值插件化音频播放器<br><br>
+<span class="flex" style="flex-flow:row wrap">
+            <a href="https://www.123865.com/s/VevLVv-xsCjv" class="btn btn-white btn-shadow btn-lg mb-10 mr-10">
+					<h3 class="project-title"><i class="bi bi-download"></i>&nbsp;立即下载</h3>
+			</a>
+            <a href="https://simsv.com/software/pages/sim-music/" class="btn btn-white btn-shadow btn-lg mb-10 mr-10">
+					<h3 class="project-title"><i class="bi bi-buildings-fill"></i>&nbsp;官方网站</h3>
+			</a>
+            <a href="https://docs.simsv.com/sim-music/user-guide.html" class="btn btn-white btn-shadow btn-lg mb-10 mr-10">
+					<h3 class="project-title"><i class="bi bi-info-circle"></i>&nbsp;用户指南</h3>
+			</a>
+</div></span>
+<br>
+*本页面为第三方页面，若您希望访问官方内容，请点击上方的链接
+<br><br>
+<h3>瑞思扩展商店</h3>
+提示：您可能需要使用加速器以加载插件列表<br><br>
+
+			<div id="extensionShopContainer"><div>
+	<script>
+		
+
+async function fetchPluginList() {
+    const response = await fetch('https://ghfast.top/https://raw.githubusercontent.com/PYLXU/pluginStore/main/pluginList.json');
+    if (!response.ok) {
+        throw new Error(`插件列表载入失败: ${response.status} ${response.statusText}（请确保您能够连接到Github）`);
+    }
+    return await response.json();
+}
+
+async function fetchLatestRelease(repoName) {
+    const [owner, repo] = repoName.split('/');
+    const url = `https://api.github.com/repos/${owner}/${repo}/releases/latest`;
+    const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error(`无法获取插件构建，存储库： ${repoName}: ${response.status} ${response.statusText}`);
+    }
+    return await response.json();
+}
+
+async function fetchManifest(repoName, tag) {
+    const url = `https://raw.githubusercontent.com/${repoName}/${tag}/manifest.json`;
+    const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error(`清单获取失败|${repoName}: ${response.status} ${response.statusText}`);
+    }
+    return await response.json();
+}
+
+async function fetchPackageJson(repoName, tag) {
+    const url = `https://raw.githubusercontent.com/${repoName}/${tag}/package.json`;
+    const response = await fetch(url);
+    
+    if (!response.ok) {
+        throw new Error(`清单获取失败|${repoName}: ${response.status} ${response.statusText}`);
+    }
+    return await response.json();
+}
+
+function insertAfter(newElement, targetElement) {
+    var parent = targetElement.parentNode;
+    if (parent.lastChild == targetElement) {
+        parent.appendChild(newElement);
+    } else {
+        parent.insertBefore(newElement, targetElement.nextSibling);
+    }
+}
+
+async function loadStoreData() {
+    const extensionContainer = document.getElementById("extensionShopContainer");
+    extensionContainer.innerHTML = "";
+    try {
+        const plugins = await fetchPluginList();
+        for (const plugin of plugins) {
+            const repoName = plugin.name;
+            try {
+                const release = await fetchLatestRelease(repoName);
+
+                const owner = repoName.split('/')[0];
+                const packageName = plugin.id;
+                const version = plugin.version == "releases" ? release.tag_name : (await fetchPackageJson(repoName, release.tag_name)).version;
+                const onlinePluginList = document.createElement('div');
+
+                let buttonText;
+                let buttonDisabled = false;
+
+                buttonText = '下载';
+
+                onlinePluginList.innerHTML += `
+                    <card class="mb-5">
+                        <h4>${plugin.uiName}<small> - ${owner}</small></h4>
+                        <span>
+                            <i class="bi bi-bookmark"></i> 扩展包名: ${packageName}<br>
+                            <i class="bi bi-info-circle"></i> 扩展版本: ${version}<br>
+                        </span>
+						<button class="btn btn-white btn-shadow btn-md mt-5 mr-10" onclick="window.location.href= 'https://github.com/${repoName}/releases/download/${release.tag_name}/extension.zip'" ${buttonDisabled ? 'disabled' : ''}>${buttonText}</button>
+
+                    </card>
+                `;
+                extensionContainer.appendChild(onlinePluginList);
+
+            } catch (error) {
+                const errorDisplay = document.createElement('div');
+                errorDisplay.innerHTML += `
+                    <card>
+                        <div>载入这个插件时出现了错误</div>
+                        <span>
+                            <i class="bi bi-bug"></i> 错误详情: ${error}<br>
+                        </span>
+						<button onclick="window.location = 'https://github.com/${repoName}'" class="btn btn-white btn-shadow btn-md mt-5 mr-10" href class="sub">直接访问存储库</button>
+                    </card>
+                    
+            `;
+                extensionContainer.appendChild(errorDisplay);
+            }
+        }
+
+    } catch (error) {
+        const errorDisplay = document.createElement('div');
+        errorDisplay.innerHTML += `
+            <card>
+                <div>载入在线列表时出现了错误</div>
+                <span>
+                    <i class="bi bi-bug"></i> 错误详情: ${error}<br>
+                </span>
+				<button class="btn btn-white btn-shadow btn-md mt-5 mr-10" disabled>安装</button>
+            </card>
+    `;
+        extensionContainer.appendChild(errorDisplay);
+    }
+
+}
+
+function includeStyleElement(styles, styleId) {
+    if (document.getElementById(styleId)) {
+        return;
+    }
+    var style = document.createElement("style");
+    style.id = styleId;
+    (document.getElementsByTagName("head")[0] || document.body).appendChild(style);
+    if (style.styleSheet) {
+        style.styleSheet.cssText = styles;
+    } else {
+        style.appendChild(document.createTextNode(styles));
+    }
+}
+
+function includeScriptElement(scripts) {
+    var script = document.createElement("script");
+    script.textContent = scripts; // 使用 textContent 而不是 innerHTML 以避免 XSS 安全警告
+    document.body.appendChild(script);
+}
+
+loadStoreData();
+	</script>
+      <script src="./assets/js/page.js"></script>
+      <script src="./assets/js/netease.js"></script>
+    </content>
+  </main>
+  <script>appName = '瑞思音乐'</script>
+  <script src="https://music.3r60.top/app/assets/js/media-free.js"></script>
+  <script src="https://music.3r60.top/app/assets/js/basic.js"></script>
+</body>
+
+</html>
